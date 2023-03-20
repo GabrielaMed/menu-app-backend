@@ -1,70 +1,42 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { prisma } from '../../database/prismaClient';
+import { AppError } from '../../middlewares/AppErrors';
+import { getProductByNameController } from './getProductByNameController';
 
-class CreateProductController {
-  async handle(req: Request, res: Response) {
-    if (req.method !== 'POST') {
-      return res.status(405).end();
-    }
+export class CreateProductController {
+  async createProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name, description, price } = req.body;
 
-    const product = await this.createProduct(req, res);
-    const additionals = await this.createAdditionals(req, res);
+      const productExists = await getProductByNameController.handle(
+        req,
+        res,
+        name
+      );
 
-    return res.status(201).json({
-      message: 'Product created successfully.',
-      product: { product, additionals },
-    });
-  }
+      if (productExists) {
+        return res.status(400).json({
+          message: 'Product already exists.',
+        });
+      }
 
-  async createProduct(req: Request, res: Response) {
-    const { name, description, price } = req.body;
-
-    const productExists = await prisma.product.findMany({
-      where: { name },
-      take: 1,
-    });
-
-    if (productExists.length) {
-      return res.status(400).json({
-        message: 'Product already exists.',
+      res.locals.product = await prisma.product.create({
+        data: {
+          name,
+          description,
+          price,
+        },
       });
+
+      next();
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new AppError(error.message, 400);
+      } else {
+        console.log(error);
+        return error;
+      }
     }
-
-    const product = await prisma.product.create({
-      data: {
-        name,
-        description,
-        price,
-      },
-    });
-
-    return product;
-  }
-
-  async createAdditionals(req: Request, res: Response) {
-    const { name, price } = req.body.additional;
-
-    const additionalExists = await prisma.product.findMany({
-      where: {
-        AND: [name, price],
-      },
-      take: 1,
-    });
-
-    if (additionalExists.length) {
-      return res.status(400).json({
-        message: 'Product already exists.',
-      });
-    }
-
-    const additional = await prisma.additional.create({
-      data: {
-        name,
-        price,
-      },
-    });
-
-    return additional;
   }
 }
 
