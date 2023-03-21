@@ -11,7 +11,4 @@ routes.post(
   relatesAdditionalProductController.handle
 );
 
-// routes.post("/api/event/", createEventController.createEvent);
-// routes.get("/api/event/", createEventController.getEvents);
-
 export { routes };
