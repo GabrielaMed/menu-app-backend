@@ -40,7 +40,7 @@ model Additional_in_Product {
 
 model Image {
   id        String @id @default(uuid())
-  caminho   String
+  fileName  String
   productId String
 
   product Product @relation(fields: [productId], references: [id])
