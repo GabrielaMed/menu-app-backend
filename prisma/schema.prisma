@@ -7,11 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Company {
+  id         String       @id @default(uuid())
+  name       String
+  email      String       @unique
+  phone      BigInt
+  lat        String
+  long       String
+  Additional Additional[]
+  Product    Product[]
+
+  @@map("companies")
+}
+
 model Additional {
   id                    String                  @id @default(uuid())
   name                  String
   price                 Decimal                 @db.Decimal(50, 2)
+  companyId             String
   Additional_in_Product Additional_in_Product[]
+
+  company Company @relation(fields: [companyId], references: [id])
 
   @@map("additionals")
 }
@@ -21,8 +37,10 @@ model Product {
   name                  String
   description           String
   price                 Decimal                 @db.Decimal(50, 2)
+  companyId             String
   Additional_in_Product Additional_in_Product[]
   Image                 Image[]
+  company               Company                 @relation(fields: [companyId], references: [id])
 
   @@map("products")
 }
