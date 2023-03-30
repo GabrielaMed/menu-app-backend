@@ -9,7 +9,7 @@ import { saveImagesController } from './controllers/product/saveImagesController
 const routes = Router();
 
 routes.post(
-  '/api/product',
+  '/api/:companyId/product',
   createProductController.createProduct,
   createAdditionalController.createAdditionals,
   relatesAdditionalProductController.handle
