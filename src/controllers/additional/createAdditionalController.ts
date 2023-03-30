@@ -5,6 +5,7 @@ import { getAdditionalByNameController } from './getAdditionalByNameController';
 
 export class CreateAdditionalController {
   async createAdditionals(req: Request, res: Response, next: NextFunction) {
+    const { companyId } = req.params;
     try {
       let additionals: any[] = [];
 
@@ -17,12 +18,12 @@ export class CreateAdditionalController {
           req,
           res,
           name,
-          price
+          companyId
         );
 
         if (additionalExists) {
           return res.status(400).json({
-            message: 'Additional already exists.',
+            message: `Additional ${name} already exists.`,
           });
         }
 
@@ -30,6 +31,7 @@ export class CreateAdditionalController {
           data: {
             name,
             price,
+            companyId,
           },
         });
 
@@ -42,6 +44,7 @@ export class CreateAdditionalController {
 
       await createAdditional(0);
       res.locals.product.additionals = additionals;
+
       next();
     } catch (error) {
       if (error instanceof Error) {

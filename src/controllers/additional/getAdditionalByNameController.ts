@@ -7,12 +7,13 @@ export class GetAdditionalByNameController {
     req: Request,
     res: Response,
     additionalName: string,
-    additionalPrice: number
+    companyId: string
   ) {
     try {
       const additional = await prisma.additional.findMany({
         where: {
-          AND: [{ name: additionalName }, { price: additionalPrice }],
+          name: additionalName,
+          companyId,
         },
         take: 1,
       });
