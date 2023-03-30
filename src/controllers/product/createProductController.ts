@@ -7,11 +7,13 @@ export class CreateProductController {
   async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const { name, description, price } = req.body;
+      const { companyId } = req.params;
 
       const productExists = await getProductByNameController.handle(
         req,
         res,
-        name
+        name,
+        companyId
       );
 
       if (productExists) {
@@ -25,6 +27,7 @@ export class CreateProductController {
           name,
           description,
           price,
+          companyId,
         },
       });
 

@@ -3,10 +3,18 @@ import { AppError } from '../../middlewares/AppErrors';
 import { prisma } from '../../database/prismaClient';
 
 export class GetProductByNameController {
-  async handle(req: Request, res: Response, productName: string) {
+  async handle(
+    req: Request,
+    res: Response,
+    productName: string,
+    companyId: string
+  ) {
     try {
       const product = await prisma.product.findMany({
-        where: { name: productName },
+        where: {
+          name: productName,
+          companyId,
+        },
         take: 1,
       });
 
