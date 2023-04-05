@@ -17,12 +17,10 @@ export class CreateProductController {
       );
 
       if (productExists) {
-        return res.status(400).json({
-          message: 'Product already exists.',
-        });
+        return res.status(400).send('Product already exists.');
       }
 
-      res.locals.product = await prisma.product.create({
+      const response = await prisma.product.create({
         data: {
           name,
           description,
@@ -31,7 +29,10 @@ export class CreateProductController {
         },
       });
 
-      next();
+      res.status(201).json({
+        status: 'Created Succesfully',
+        product: response,
+      });
     } catch (error) {
       if (error instanceof Error) {
         throw new AppError(error.message, 400);

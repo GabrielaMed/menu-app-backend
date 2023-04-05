@@ -5,20 +5,23 @@ import { relatesAdditionalProductController } from './controllers/relatesAdditio
 import multer from 'multer';
 import * as multerConfig from './config/multer';
 import { saveImagesController } from './controllers/product/saveImagesController';
+import { getProductByIdController } from './controllers/product/getProductByIdController';
+import { getProductImagesController } from './controllers/product/getProductImagesController';
+import { getAdditionalInProductByIdController } from './controllers/additional/getAdditionalInProductByIdController';
 
 const routes = Router();
 
+routes.post('/v1/:companyId/product', createProductController.createProduct);
 routes.post(
-  '/api/:companyId/product',
-  createProductController.createProduct,
-  createAdditionalController.createAdditionals,
-  relatesAdditionalProductController.handle
-);
-
-routes.post(
-  '/api/:productId/image',
+  '/v1/product/:productId/image',
   multer(multerConfig).single('file'),
   saveImagesController.handle
+);
+routes.get('/v1/product/:productId', getProductByIdController.handle);
+routes.get('/v1/product/:productId/image', getProductImagesController.handle);
+routes.get(
+  '/v1/product/:productId/additionals',
+  getAdditionalInProductByIdController.handle
 );
 
 export { routes };

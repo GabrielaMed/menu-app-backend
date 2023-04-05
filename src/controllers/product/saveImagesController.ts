@@ -7,11 +7,11 @@ export class SaveImagesController {
     const { file } = req;
     const { productId } = req.params;
     if (!file?.filename) {
-      throw new Error('Obrigatório informar um arquivo.');
+      return res.status(400).send('Obrigatório informar um arquivo.');
     }
 
     if (!productId) {
-      throw new Error('Obrigatório informar o id do produto.');
+      return res.status(400).send('Obrigatório informar o id do produto.');
     }
 
     try {
