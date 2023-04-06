@@ -5,28 +5,18 @@ import { prisma } from '../../database/prismaClient';
 export class RelatesAdditionalProductController {
   async handle(req: Request, res: Response) {
     try {
-      let { id } = res.locals.product;
-      let product_id = id;
-      const relatesProductAdditional = async (index: number) => {
-        if (!res.locals.product.additionals[index]) return;
+      let { productId, additionalId } = req.params;
 
-        const { id } = res.locals.product.additionals[index];
-
-        await prisma.additional_in_Product.create({
-          data: {
-            additionalId: id,
-            productId: product_id,
-          },
-        });
-
-        await relatesProductAdditional(index + 1);
-      };
-
-      await relatesProductAdditional(0);
+      const relation = await prisma.additional_in_Product.create({
+        data: {
+          additionalId,
+          productId,
+        },
+      });
 
       res.status(201).json({
         status: 'Created Succesfully',
-        product: res.locals.product,
+        product: relation,
       });
     } catch (error) {
       if (error instanceof Error) {
