@@ -4,48 +4,33 @@ import { AppError } from '../../middlewares/AppErrors';
 import { getAdditionalByNameController } from './getAdditionalByNameController';
 
 export class CreateAdditionalController {
-  async createAdditionals(req: Request, res: Response, next: NextFunction) {
+  async handle(req: Request, res: Response, next: NextFunction) {
     const { companyId } = req.params;
+    const { name, price } = req.body;
     try {
-      let additionals: any[] = [];
+      const additionalExists = await getAdditionalByNameController.handle(
+        req,
+        res,
+        name,
+        companyId
+      );
 
-      const createAdditional = async (index: number) => {
-        if (!req.body.additionals[index]) return;
+      if (additionalExists) {
+        return res.status(400).send(`Additional ${name} already exists.`);
+      }
 
-        const { name, price } = req.body.additionals[index];
-
-        const additionalExists = await getAdditionalByNameController.handle(
-          req,
-          res,
+      const additional = await prisma.additional.create({
+        data: {
           name,
-          companyId
-        );
+          price,
+          companyId,
+        },
+      });
 
-        if (additionalExists) {
-          return res.status(400).json({
-            message: `Additional ${name} already exists.`,
-          });
-        }
-
-        const additional = await prisma.additional.create({
-          data: {
-            name,
-            price,
-            companyId,
-          },
-        });
-
-        additionals.push({
-          ...additional,
-        });
-
-        await createAdditional(index + 1);
-      };
-
-      await createAdditional(0);
-      res.locals.product.additionals = additionals;
-
-      next();
+      res.status(201).json({
+        status: 'Created Succesfully',
+        product: additional,
+      });
     } catch (error) {
       if (error instanceof Error) {
         throw new AppError(error.message, 400);
