@@ -9,32 +9,43 @@ import { getProductByIdController } from './controllers/product/getProductByIdCo
 import { getProductImagesController } from './controllers/product/getProductImagesController';
 import { getAdditionalInProductByIdController } from './controllers/additional/getAdditionalInProductByIdController';
 import { getAdditionalByCompanyController } from './controllers/additional/getAdditionalByCampanyController';
+import { getCompanyByIdController } from './controllers/company/getCompanyByIdController';
+import { getProductByCompanyController } from './controllers/product/getProductByCompanyController';
 
 const routes = Router();
 
-routes.post('/v1/:companyId/product', createProductController.createProduct);
+const prefix = 'v1';
+
+routes
+  .route(`/${prefix}/:companyId/product`)
+  .post(createProductController.createProduct)
+  .get(getProductByCompanyController.handle);
 
 routes.post(
-  '/v1/product/:productId/image',
+  `/${prefix}/product/:productId/image`,
   multer(multerConfig).single('file'),
   saveImagesController.handle
 );
 
-routes.get('/v1/product/:productId', getProductByIdController.handle);
-routes.get('/v1/product/:productId/image', getProductImagesController.handle);
+routes.get(`/${prefix}/product/:productId`, getProductByIdController.handle);
 routes.get(
-  '/v1/product/:productId/additionals',
+  `/${prefix}/product/:productId/image`,
+  getProductImagesController.handle
+);
+routes.get(
+  `/${prefix}/product/:productId/additionals`,
   getAdditionalInProductByIdController.handle
 );
 
 routes
-  .route('/v1/:companyId/additionals')
+  .route(`/${prefix}/:companyId/additionals`)
   .get(getAdditionalByCompanyController.handle)
   .post(createAdditionalController.handle);
 
 routes.post(
-  '/v1/product/:productId/:additionalId',
+  `/${prefix}/product/:productId/:additionalId`,
   relatesAdditionalProductController.handle
 );
 
+routes.get(`/${prefix}/company/:companyId`, getCompanyByIdController.handle);
 export { routes };
