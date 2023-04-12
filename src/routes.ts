@@ -11,6 +11,7 @@ import { getAdditionalInProductByIdController } from './controllers/additional/g
 import { getAdditionalByCompanyController } from './controllers/additional/getAdditionalByCampanyController';
 import { getCompanyByIdController } from './controllers/company/getCompanyByIdController';
 import { getProductByCompanyController } from './controllers/product/getProductByCompanyController';
+import { updateProductController } from './controllers/product/updateProductController';
 
 const routes = Router();
 
@@ -20,6 +21,11 @@ routes
   .route(`/${prefix}/:companyId/product`)
   .post(createProductController.createProduct)
   .get(getProductByCompanyController.handle);
+
+routes.put(
+  `/${prefix}/:companyId/product/:productId`,
+  updateProductController.handle
+);
 
 routes.post(
   `/${prefix}/product/:productId/image`,
