@@ -12,6 +12,9 @@ export class RelatesAdditionalProductController {
           additionalId,
           productId,
         },
+        select: {
+          additional: true,
+        },
       });
 
       res.status(201).json({
