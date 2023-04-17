@@ -9,6 +9,7 @@ app.use(express.json());
 app.use('/api', express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(express.static('public/uploads'));
 
 app.use(routes);
 
