@@ -12,6 +12,7 @@ import { getAdditionalByCompanyController } from './controllers/additional/getAd
 import { getCompanyByIdController } from './controllers/company/getCompanyByIdController';
 import { getProductByCompanyController } from './controllers/product/getProductByCompanyController';
 import { updateProductController } from './controllers/product/updateProductController';
+import { createOrderController } from './controllers/order/createOrderController';
 
 const routes = Router();
 
@@ -34,6 +35,7 @@ routes.post(
 );
 
 routes.get(`/${prefix}/product/:productId`, getProductByIdController.handle);
+
 routes.get(
   `/${prefix}/product/:productId/image`,
   getProductImagesController.handle
@@ -54,4 +56,8 @@ routes.post(
 );
 
 routes.get(`/${prefix}/company/:companyId`, getCompanyByIdController.handle);
+
+routes.post(`/${prefix}/order`, createOrderController.handle);
+
+routes.get(`/${prefix}/order/:visitorUuid`, createOrderController.handle);
 export { routes };

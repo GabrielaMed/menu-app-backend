@@ -16,6 +16,7 @@ model Company {
   long       String
   Additional Additional[]
   Product    Product[]
+  Order      Order[]
 
   @@map("companies")
 }
@@ -27,20 +28,23 @@ model Additional {
   companyId             String
   Additional_in_Product Additional_in_Product[]
 
-  company Company @relation(fields: [companyId], references: [id])
+  company          Company            @relation(fields: [companyId], references: [id])
+  Order_additional Order_additional[]
 
   @@map("additionals")
 }
 
 model Product {
-  id                    String                  @id @default(uuid())
-  name                  String
-  description           String
-  price                 Decimal                 @db.Decimal(50, 2)
-  companyId             String
+  id          String  @id @default(uuid())
+  name        String
+  description String
+  price       Decimal @db.Decimal(50, 2)
+  companyId   String
+
   Additional_in_Product Additional_in_Product[]
   Image                 Image[]
   company               Company                 @relation(fields: [companyId], references: [id])
+  Order_products        Order_products[]
 
   @@map("products")
 }
@@ -64,4 +68,52 @@ model Image {
   product Product @relation(fields: [productId], references: [id])
 
   @@map("images")
+}
+
+enum Order_status {
+  canceladoRestaurante @map("cancelado - restaurante")
+  canceladoCliente     @map("cancelado - cliente")
+  iniciado             @map("iniciado")
+  enviado              @map("enviado")
+  em_producao          @map("em produção")
+  pronto               @map("pronto")
+  emRota               @map("em rota")
+  entregue             @map("entregue")
+}
+
+model Order {
+  id          String       @id @default(uuid())
+  visitorUuid String
+  statusOrder Order_status
+  companyId   String
+  observation String
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  Order_additional Order_additional[]
+  Order_products   Order_products[]
+
+  @@map("orders")
+}
+
+model Order_products {
+  id        String @id @default(uuid())
+  orderId   String
+  productId String
+
+  product Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
+
+  @@map("order_products")
+}
+
+model Order_additional {
+  id           String @id @default(uuid())
+  orderId      String
+  additionalId String
+
+  order      Order      @relation(fields: [orderId], references: [id])
+  additional Additional @relation(fields: [additionalId], references: [id])
+
+  @@map("order_additionals")
 }
