@@ -5,21 +5,19 @@ import { AppError } from '../../middlewares/AppErrors';
 export class CreateOrderController {
   async handle(req: Request, res: Response) {
     try {
-      const { productId, companyId, visitorUuid, statusOrder, observation } =
-        req.body;
+      const { companyId, visitorUuid, statusOrder } = req.body;
 
       const response = await prisma.order.create({
         data: {
           companyId,
           visitorUuid,
           statusOrder,
-          observation,
         },
       });
 
       res.status(201).json({
-        status: 'Created Succesfully',
-        product: response,
+        status: 'Order Created Succesfully',
+        order: response,
       });
     } catch (error) {
       if (error instanceof Error) {

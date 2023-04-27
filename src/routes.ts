@@ -13,6 +13,8 @@ import { getCompanyByIdController } from './controllers/company/getCompanyByIdCo
 import { getProductByCompanyController } from './controllers/product/getProductByCompanyController';
 import { updateProductController } from './controllers/product/updateProductController';
 import { createOrderController } from './controllers/order/createOrderController';
+import { getOrderByVisitorController } from './controllers/order/getOrderByVisitorController';
+import { relatesOrderAndProductController } from './controllers/order/relatesOrderAndProductController';
 
 const routes = Router();
 
@@ -59,5 +61,13 @@ routes.get(`/${prefix}/company/:companyId`, getCompanyByIdController.handle);
 
 routes.post(`/${prefix}/order`, createOrderController.handle);
 
-routes.get(`/${prefix}/order/:visitorUuid`, createOrderController.handle);
+routes.post(
+  `/${prefix}/order/:orderId`,
+  relatesOrderAndProductController.handle
+);
+
+routes.get(
+  `/${prefix}/order/visitor/:visitorUuid/:companyId`,
+  getOrderByVisitorController.handle
+);
 export { routes };

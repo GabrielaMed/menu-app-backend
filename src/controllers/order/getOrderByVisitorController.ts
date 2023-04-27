@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { AppError } from '../../middlewares/AppErrors';
 import { prisma } from '../../database/prismaClient';
 
 export class GetOrderByVisitorController {
-  async handle(req: Request, res: Response, next: NextFunction) {
+  async handle(req: Request, res: Response) {
     const { visitorUuid, companyId } = req.params;
 
     try {
@@ -21,7 +21,7 @@ export class GetOrderByVisitorController {
       return res.status(200).json(order);
     } catch (error) {
       if (error instanceof Error) {
-        next(new AppError(error.message, 400));
+        throw new AppError(error.message, 400);
       } else {
         console.log(error);
         return error;
