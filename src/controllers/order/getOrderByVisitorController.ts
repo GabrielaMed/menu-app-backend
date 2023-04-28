@@ -12,6 +12,40 @@ export class GetOrderByVisitorController {
           visitorUuid,
           companyId,
         },
+        select: {
+          id: true,
+          Order_additional: {
+            select: {
+              additional: {
+                select: {
+                  id: true,
+                  name: true,
+                  price: true,
+                },
+              },
+            },
+          },
+          Order_products: {
+            select: {
+              id: true,
+              observation: true,
+              quantity: true,
+              product: {
+                select: {
+                  name: true,
+                  price: true,
+                  Image: {
+                    select: {
+                      fileName: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          statusOrder: true,
+          _count: true,
+        },
       });
 
       if (order.length === 0) {

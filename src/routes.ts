@@ -70,4 +70,5 @@ routes.get(
   `/${prefix}/order/visitor/:visitorUuid/:companyId`,
   getOrderByVisitorController.handle
 );
+
 export { routes };
