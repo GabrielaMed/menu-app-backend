@@ -14,17 +14,6 @@ export class GetOrderByVisitorController {
         },
         select: {
           id: true,
-          Order_additional: {
-            select: {
-              additional: {
-                select: {
-                  id: true,
-                  name: true,
-                  price: true,
-                },
-              },
-            },
-          },
           Order_products: {
             select: {
               id: true,

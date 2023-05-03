@@ -89,8 +89,7 @@ model Order {
 
   company Company @relation(fields: [companyId], references: [id])
 
-  Order_additional Order_additional[]
-  Order_products   Order_products[]
+  Order_products Order_products[]
 
   @@map("orders")
 }
@@ -102,19 +101,20 @@ model Order_products {
   observation String
   quantity    Int
 
-  product Product @relation(fields: [productId], references: [id])
-  order   Order   @relation(fields: [orderId], references: [id])
+  product          Product            @relation(fields: [productId], references: [id])
+  order            Order              @relation(fields: [orderId], references: [id])
+  Order_additional Order_additional[]
 
   @@map("order_products")
 }
 
 model Order_additional {
-  id           String @id @default(uuid())
-  orderId      String
-  additionalId String
+  id             String @id @default(uuid())
+  orderProductId String
+  additionalId   String
 
-  order      Order      @relation(fields: [orderId], references: [id])
-  additional Additional @relation(fields: [additionalId], references: [id])
+  orderProduct Order_products @relation(fields: [orderProductId], references: [id])
+  additional   Additional     @relation(fields: [additionalId], references: [id])
 
   @@map("order_additionals")
 }
