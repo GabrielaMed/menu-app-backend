@@ -71,4 +71,9 @@ routes.get(
   getOrderByVisitorController.handle
 );
 
+routes.post(
+  `/${prefix}/order/:additionalId/:orderProductId`,
+  relatesOrderAndProductController.handle
+);
+
 export { routes };
