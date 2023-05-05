@@ -110,10 +110,11 @@ model Order_products {
 
 model Order_additional {
   id             String @id @default(uuid())
-  orderProductId String
+  orderproductid String
   additionalId   String
+  quantity       Int
 
-  orderProduct Order_products @relation(fields: [orderProductId], references: [id])
+  orderProduct Order_products @relation(fields: [orderproductid], references: [id])
   additional   Additional     @relation(fields: [additionalId], references: [id])
 
   @@map("order_additionals")

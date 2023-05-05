@@ -15,6 +15,7 @@ import { updateProductController } from './controllers/product/updateProductCont
 import { createOrderController } from './controllers/order/createOrderController';
 import { getOrderByVisitorController } from './controllers/order/getOrderByVisitorController';
 import { relatesOrderAndProductController } from './controllers/order/relatesOrderAndProductController';
+import { relatesOrderProductAndAdditionalController } from './controllers/order/relatesOrderProductAndAdditionalController';
 
 const routes = Router();
 
@@ -63,17 +64,13 @@ routes.post(`/${prefix}/order`, createOrderController.handle);
 
 routes.post(
   `/${prefix}/order/:orderId`,
-  relatesOrderAndProductController.handle
+  relatesOrderAndProductController.handle,
+  relatesOrderProductAndAdditionalController.handle
 );
 
 routes.get(
   `/${prefix}/order/visitor/:visitorUuid/:companyId`,
   getOrderByVisitorController.handle
-);
-
-routes.post(
-  `/${prefix}/order/:additionalId/:orderProductId`,
-  relatesOrderAndProductController.handle
 );
 
 export { routes };

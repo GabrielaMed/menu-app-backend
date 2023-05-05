@@ -1,14 +1,14 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../../middlewares/AppErrors';
 import { prisma } from '../../database/prismaClient';
 
 export class RelatesOrderAndProductController {
-  async handle(req: Request, res: Response) {
+  async handle(req: Request, res: Response, next: NextFunction) {
     const { orderId } = req.params;
-    const { productId, observation, quantity } = req.body;
+    const { productId, observation, quantity, additionals } = req.body;
 
     try {
-      const order = await prisma.order_products.create({
+      const product_order = await prisma.order_products.create({
         data: {
           orderId,
           productId,
@@ -57,7 +57,15 @@ export class RelatesOrderAndProductController {
         },
       });
 
-      return res.status(201).json(order);
+      res.locals.orderProductId = product_order.order.Order_products.filter(
+        (item) => item.product.id === productId
+      )[0].id;
+
+      if (additionals.length > 0) {
+        next();
+      } else {
+        return res.status(201).json(product_order);
+      }
     } catch (error) {
       if (error instanceof Error) {
         throw new AppError(error.message, 400);
