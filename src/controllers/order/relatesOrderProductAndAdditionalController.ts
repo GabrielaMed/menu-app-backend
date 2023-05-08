@@ -23,6 +23,7 @@ export class RelatesOrderProductAndAdditionalController {
               include: {
                 order: {
                   select: {
+                    id: true,
                     Order_products: {
                       select: {
                         id: true,
