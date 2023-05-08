@@ -16,6 +16,7 @@ export class RelatesOrderAndProductController {
           quantity,
         },
         select: {
+          id: true,
           order: {
             select: {
               id: true,
@@ -57,9 +58,7 @@ export class RelatesOrderAndProductController {
         },
       });
 
-      res.locals.orderProductId = product_order.order.Order_products.filter(
-        (item) => item.product.id === productId
-      )[0].id;
+      res.locals.orderProductId = product_order.id;
 
       if (additionals.length > 0) {
         next();
