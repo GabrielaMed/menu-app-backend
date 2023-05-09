@@ -33,6 +33,7 @@ export class GetOrderByVisitorController {
               },
               product: {
                 select: {
+                  id: true,
                   name: true,
                   price: true,
                   Image: {
