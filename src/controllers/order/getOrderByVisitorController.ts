@@ -54,6 +54,7 @@ export class GetOrderByVisitorController {
         ...order,
         Order_products: [
           ...order.Order_products.map((item) => ({
+            id: item.id,
             product: item.product,
             observation: item.observation,
             quantity: item.quantity,
