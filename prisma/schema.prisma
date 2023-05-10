@@ -114,7 +114,7 @@ model Order_additional {
   additionalId   String
   quantity       Int
 
-  orderProduct Order_products @relation(fields: [orderproductid], references: [id])
+  orderProduct Order_products @relation(fields: [orderproductid], references: [id], onDelete: Cascade)
   additional   Additional     @relation(fields: [additionalId], references: [id])
 
   @@map("order_additionals")

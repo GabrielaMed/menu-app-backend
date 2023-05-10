@@ -7,7 +7,7 @@ export class UpdateOrderController {
     try {
       const { newStatusOrder, products } = req.body;
       const { orderId } = req.params;
-
+      console.log('PRODUCTDS', products);
       await prisma.order.update({
         where: {
           id: orderId,
@@ -21,29 +21,38 @@ export class UpdateOrderController {
         (product: any) => product.quantity === 0
       );
       if (productToRemove.length > 0) {
+        await prisma.order_additional.deleteMany({
+          where: {
+            orderproductid: {
+              in: productToRemove.map((item: any) => item.orderProductId),
+            },
+          },
+        });
         const res = await prisma.order_products.deleteMany({
           where: {
-            id: { in: productToRemove.map((item: any) => item.productId) },
+            id: { in: productToRemove.map((item: any) => item.orderProductId) },
           },
         });
 
         console.log('>>>>>>', res);
       } else {
-        const res = await prisma.order_products.updateMany({
-          where: {
-            id: { in: products.map((item: any) => item.productId) },
-          },
-          data: {
-            quantity: {
-              set: products.map((item: any) => ({
-                where: { productId: item.productId },
-                value: item.quantity,
-              })),
+        const filterProducts = async (index: number) => {
+          if (!products[index]) return;
+          const res = await prisma.order_products.updateMany({
+            where: {
+              id: products[index].orderProductId,
             },
-          },
-        });
+            data: {
+              quantity: products[index].quantity,
+            },
+          });
 
-        console.log('>>>', res);
+          console.log('>>>', res);
+
+          await filterProducts(index + 1);
+        };
+
+        await filterProducts(0);
       }
 
       res.status(200).send('Order sent successfuly');
