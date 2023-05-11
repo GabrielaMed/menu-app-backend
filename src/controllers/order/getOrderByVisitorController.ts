@@ -68,10 +68,6 @@ export class GetOrderByVisitorController {
         ],
       }));
 
-      if (orders.length === 0) {
-        return res.status(404).send('Order not found!');
-      }
-
       return res.status(200).json(ordersParsed);
     } catch (error) {
       if (error instanceof Error) {
