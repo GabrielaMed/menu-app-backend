@@ -5,26 +5,13 @@ import { AppError } from '../../middlewares/AppErrors';
 export class DeleteOrderProductController {
   async handle(req: Request, res: Response) {
     try {
-      const { newStatusOrder, products } = req.body;
-      const { orderId } = req.params;
-      console.log('PRODUCTDS', products);
+      const { orderProductId } = req.body;
 
-      await prisma.order.update({
+      await prisma.order_products.deleteMany({
         where: {
-          id: orderId,
-        },
-        data: {
-          statusOrder: newStatusOrder,
+          id: orderProductId,
         },
       });
-
-      const response = await prisma.order_products.deleteMany({
-        where: {
-          id: { in: products.map((item: any) => item.orderProductId) },
-        },
-      });
-
-      console.log('>>>>>>', response);
 
       res.status(204);
     } catch (error) {
