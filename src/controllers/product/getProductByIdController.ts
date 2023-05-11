@@ -12,6 +12,28 @@ export class GetProductByIdController {
           id: productId,
           companyId,
         },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          price: true,
+          Additional_in_Product: {
+            select: {
+              additional: {
+                select: {
+                  id: true,
+                  name: true,
+                  price: true,
+                },
+              },
+            },
+          },
+          Image: {
+            select: {
+              fileName: true,
+            },
+          },
+        },
       });
 
       if (product.length === 0) {

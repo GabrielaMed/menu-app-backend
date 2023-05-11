@@ -15,10 +15,32 @@ export class SaveImagesController {
     }
 
     try {
-      await prisma.image.createMany({
+      await prisma.image.create({
         data: {
           fileName: file.filename,
           productId,
+        },
+        select: {
+          fileName: true,
+          product: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              price: true,
+              Additional_in_Product: {
+                select: {
+                  additional: {
+                    select: {
+                      id: true,
+                      name: true,
+                      price: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
 

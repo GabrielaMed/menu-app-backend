@@ -25,6 +25,28 @@ export class CreateAdditionalController {
           price,
           companyId,
         },
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          Additional_in_Product: {
+            select: {
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  description: true,
+                  price: true,
+                  Image: {
+                    select: {
+                      fileName: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       });
 
       res.status(201).json({

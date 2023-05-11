@@ -16,6 +16,28 @@ export class GetProductByNameController {
           companyId,
         },
         take: 1,
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          price: true,
+          Additional_in_Product: {
+            select: {
+              additional: {
+                select: {
+                  id: true,
+                  name: true,
+                  price: true,
+                },
+              },
+            },
+          },
+          Image: {
+            select: {
+              fileName: true,
+            },
+          },
+        },
       });
 
       return product.length > 0 ? product[0].id : undefined;
