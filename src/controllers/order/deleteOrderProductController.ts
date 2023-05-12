@@ -13,7 +13,7 @@ export class DeleteOrderProductController {
         },
       });
 
-      res.status(204);
+      res.status(204).send('Product deleted!');
     } catch (error) {
       console.log('EROROO', error);
       if (error instanceof Error) {
