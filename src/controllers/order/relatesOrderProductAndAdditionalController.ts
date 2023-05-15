@@ -51,6 +51,7 @@ export class RelatesOrderProductAndAdditionalController {
                                 price: true,
                               },
                             },
+                            quantity: true,
                           },
                         },
                       },
