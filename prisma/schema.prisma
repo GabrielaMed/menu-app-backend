@@ -86,6 +86,7 @@ model Order {
   visitorUuid String
   statusOrder Order_status
   companyId   String
+  tableNumber Int
 
   company Company @relation(fields: [companyId], references: [id])
 

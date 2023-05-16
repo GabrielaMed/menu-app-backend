@@ -5,13 +5,14 @@ import { AppError } from '../../middlewares/AppErrors';
 export class CreateOrderController {
   async handle(req: Request, res: Response) {
     try {
-      const { companyId, visitorUuid, statusOrder } = req.body;
+      const { companyId, visitorUuid, statusOrder, tableNumber } = req.body;
 
       const response = await prisma.order.create({
         data: {
           companyId,
           visitorUuid,
           statusOrder,
+          tableNumber,
         },
       });
 
