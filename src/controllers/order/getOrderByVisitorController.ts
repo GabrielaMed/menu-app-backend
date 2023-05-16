@@ -11,6 +11,7 @@ export class GetOrderByVisitorController {
         where: {
           visitorUuid,
           companyId,
+          statusOrder: 'iniciado',
         },
         select: {
           id: true,
