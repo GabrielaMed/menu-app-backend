@@ -5,9 +5,9 @@
   "author": "Gabriela S. Medeiros",
   "license": "MIT",
   "scripts": {
-    "start": "node build/server.js",
+    "start": "node build/src/server.js",
     "dev": "nodemon src/server.ts",
-    "build": "tsup src --out-dir build",
+    "build": "tsup src public --out-dir build",
     "lint:fix": "eslint --fix --ext .ts ."
   },
   "devDependencies": {
