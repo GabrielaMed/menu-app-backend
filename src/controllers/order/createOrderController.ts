@@ -13,6 +13,8 @@ export class CreateOrderController {
           visitorUuid,
           statusOrder,
           tableNumber,
+          dateTimeOrder: new Date(),
+          total: 0.0,
         },
       });
 
