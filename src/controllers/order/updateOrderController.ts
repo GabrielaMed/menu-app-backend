@@ -5,7 +5,7 @@ import { AppError } from '../../middlewares/AppErrors';
 export class UpdateOrderController {
   async handle(req: Request, res: Response) {
     try {
-      const { newStatusOrder, products } = req.body;
+      const { newStatusOrder, products, total } = req.body;
       const { orderId } = req.params;
 
       await prisma.order.update({
@@ -14,6 +14,8 @@ export class UpdateOrderController {
         },
         data: {
           statusOrder: newStatusOrder,
+          total,
+          dateTimeOrder: new Date(),
         },
       });
 
