@@ -18,6 +18,7 @@ import { relatesOrderAndProductController } from './controllers/order/relatesOrd
 import { relatesOrderProductAndAdditionalController } from './controllers/order/relatesOrderProductAndAdditionalController';
 import { updateOrderController } from './controllers/order/updateOrderController';
 import { deleteOrderProductController } from './controllers/order/deleteOrderProductController';
+import { getOrdersByCompanyIdController } from './controllers/order/getOrdersByCompanyIdController';
 
 const routes = Router();
 
@@ -76,6 +77,11 @@ routes
 routes.get(
   `/${prefix}/order/visitor/:visitorUuid/:companyId`,
   getOrderByVisitorController.handle
+);
+
+routes.get(
+  `/${prefix}/order/:companyId`,
+  getOrdersByCompanyIdController.handle
 );
 
 export { routes };
