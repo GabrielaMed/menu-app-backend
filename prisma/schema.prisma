@@ -82,11 +82,14 @@ enum Order_status {
 }
 
 model Order {
-  id          String       @id @default(uuid())
-  visitorUuid String
-  statusOrder Order_status
-  companyId   String
-  tableNumber Int
+  id            String       @id @default(uuid())
+  visitorUuid   String
+  statusOrder   Order_status
+  companyId     String
+  tableNumber   Int
+  dateTimeOrder DateTime?
+  total         Decimal?     @db.Decimal(7, 2)
+  orderNumber   Int          @default(autoincrement()) @db.Integer
 
   company Company @relation(fields: [companyId], references: [id])
 
