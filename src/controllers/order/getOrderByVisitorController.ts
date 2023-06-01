@@ -11,7 +11,7 @@ export class GetOrderByVisitorController {
         where: {
           visitorUuid,
           companyId,
-          statusOrder: 'iniciado',
+          orderStatusId: 3,
         },
         select: {
           id: true,
@@ -46,13 +46,18 @@ export class GetOrderByVisitorController {
               },
             },
           },
-          statusOrder: true,
+          order_status: {
+            select: {
+              status: true,
+            },
+          },
           _count: true,
         },
       });
 
       const ordersParsed = orders.map((order) => ({
         ...order,
+        statusOrder: order.order_status.status,
         Order_products: [
           ...order.Order_products.map((item) => ({
             id: item.id,

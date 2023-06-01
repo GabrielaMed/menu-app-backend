@@ -8,12 +8,19 @@ export class UpdateOrderController {
       const { newStatusOrder, products, total } = req.body;
       const { orderId } = req.params;
 
+      const orderStatus = await prisma.order_status.findMany({
+        where: {
+          status: newStatusOrder,
+        },
+        take: 1,
+      });
+
       await prisma.order.update({
         where: {
           id: orderId,
         },
         data: {
-          statusOrder: newStatusOrder,
+          orderStatusId: orderStatus[0].id,
           total,
           dateTimeOrder: new Date(),
         },

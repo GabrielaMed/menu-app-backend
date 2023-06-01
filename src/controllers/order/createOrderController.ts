@@ -7,11 +7,18 @@ export class CreateOrderController {
     try {
       const { companyId, visitorUuid, statusOrder, tableNumber } = req.body;
 
+      const orderStatus = await prisma.order_status.findMany({
+        where: {
+          status: statusOrder,
+        },
+        take: 1,
+      });
+
       const response = await prisma.order.create({
         data: {
           companyId,
           visitorUuid,
-          statusOrder,
+          orderStatusId: orderStatus[0].id,
           tableNumber,
           dateTimeOrder: new Date(),
           total: 0.0,

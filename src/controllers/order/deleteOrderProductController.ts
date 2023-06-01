@@ -51,12 +51,21 @@ export class DeleteOrderProductController {
               },
             },
           },
-          statusOrder: true,
+          order_status: {
+            select: {
+              status: true,
+            },
+          },
           _count: true,
         },
       });
 
-      res.status(200).json(orderProducts);
+      const orderProductsParsed = orderProducts.map((order) => ({
+        ...order,
+        statusOrder: order.order_status.status,
+      }));
+
+      res.status(200).json(orderProductsParsed);
     } catch (error) {
       console.log('EROROO', error);
       if (error instanceof Error) {

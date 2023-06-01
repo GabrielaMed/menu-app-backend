@@ -53,7 +53,11 @@ export class RelatesOrderAndProductController {
                 },
               },
               _count: true,
-              statusOrder: true,
+              order_status: {
+                select: {
+                  status: true,
+                },
+              },
             },
           },
         },
@@ -64,7 +68,11 @@ export class RelatesOrderAndProductController {
       if (additionals.length > 0) {
         next();
       } else {
-        return res.status(201).json(product_order);
+        const product_order_parsed = {
+          ...product_order,
+          statusOrder: product_order.order.order_status.status,
+        };
+        return res.status(201).json(product_order_parsed);
       }
     } catch (error) {
       if (error instanceof Error) {

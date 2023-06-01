@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AppError } from '../../middlewares/AppErrors';
 import { prisma } from '../../database/prismaClient';
+import { Order_status } from '@prisma/client';
 
 export class GetOrdersByCompanyIdController {
   async handle(req: Request, res: Response) {
@@ -48,13 +49,18 @@ export class GetOrdersByCompanyIdController {
               },
             },
           },
-          statusOrder: true,
+          order_status: {
+            select: {
+              status: true,
+            },
+          },
           _count: true,
         },
       });
 
       const ordersParsed = orders.map((order) => ({
         ...order,
+        statusOrder: order.order_status.status,
         Order_products: [
           ...order.Order_products.map((item) => ({
             id: item.id,

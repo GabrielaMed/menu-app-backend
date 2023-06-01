@@ -6,13 +6,13 @@ export class RelatesOrderProductAndAdditionalController {
   async handle(req: Request, res: Response) {
     const { orderProductId } = res.locals;
     const { additionals } = req.body;
-    let order;
+    let orders;
 
     const filterAdditionals = async (index: number) => {
       if (!additionals[index]) return;
 
       try {
-        order = await prisma.order_additional.create({
+        orders = await prisma.order_additional.create({
           data: {
             additionalId: additionals[index].additionalId,
             orderproductid: orderProductId,
@@ -57,7 +57,11 @@ export class RelatesOrderProductAndAdditionalController {
                       },
                     },
                     _count: true,
-                    statusOrder: true,
+                    order_status: {
+                      select: {
+                        status: true,
+                      },
+                    },
                   },
                 },
               },
@@ -66,7 +70,12 @@ export class RelatesOrderProductAndAdditionalController {
         });
 
         if (additionals.length === index + 1) {
-          return res.status(201).json(order);
+          const order_parsed = {
+            ...orders,
+            statusOrder: orders.orderProduct.order.order_status.status,
+          };
+
+          return res.status(201).json(order_parsed);
         }
 
         await filterAdditionals(index + 1);

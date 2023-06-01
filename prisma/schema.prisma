@@ -70,28 +70,26 @@ model Image {
   @@map("images")
 }
 
-enum Order_status {
-  canceladoRestaurante @map("cancelado - restaurante")
-  canceladoCliente     @map("cancelado - cliente")
-  iniciado             @map("iniciado")
-  enviado              @map("enviado")
-  em_producao          @map("em produção")
-  pronto               @map("pronto")
-  emRota               @map("em rota")
-  entregue             @map("entregue")
+model Order_status {
+  id     Int     @id @default(autoincrement()) @db.Integer
+  status String  @db.VarChar(50)
+  Order  Order[]
+
+  @@map("order_status")
 }
 
 model Order {
-  id            String       @id @default(uuid())
+  id            String    @id @default(uuid())
   visitorUuid   String
-  statusOrder   Order_status
+  orderStatusId Int
   companyId     String
   tableNumber   Int
   dateTimeOrder DateTime?
-  total         Decimal?     @db.Decimal(7, 2)
-  orderNumber   Int          @default(autoincrement()) @db.Integer
+  total         Decimal?  @db.Decimal(7, 2)
+  orderNumber   Int       @default(autoincrement()) @db.Integer
 
-  company Company @relation(fields: [companyId], references: [id])
+  order_status Order_status @relation(fields: [orderStatusId], references: [id])
+  company      Company      @relation(fields: [companyId], references: [id])
 
   Order_products Order_products[]
 
