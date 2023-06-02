@@ -19,6 +19,7 @@ import { relatesOrderProductAndAdditionalController } from './controllers/order/
 import { updateOrderController } from './controllers/order/updateOrderController';
 import { deleteOrderProductController } from './controllers/order/deleteOrderProductController';
 import { getOrdersByCompanyIdController } from './controllers/order/getOrdersByCompanyIdController';
+import { getOrdersByIdController } from './controllers/order/getOrderByIdController';
 
 const routes = Router();
 
@@ -72,7 +73,8 @@ routes
     relatesOrderProductAndAdditionalController.handle
   )
   .put(updateOrderController.handle)
-  .delete(deleteOrderProductController.handle);
+  .delete(deleteOrderProductController.handle)
+  .get(getOrdersByIdController.handle);
 
 routes.get(
   `/${prefix}/order/visitor/:visitorUuid/:companyId`,
@@ -80,7 +82,7 @@ routes.get(
 );
 
 routes.get(
-  `/${prefix}/order/:companyId`,
+  `/${prefix}/order/company/:companyId`,
   getOrdersByCompanyIdController.handle
 );
 
