@@ -12,6 +12,9 @@ export class GetOrdersByCompanyIdController {
         where: {
           companyId,
         },
+        orderBy: {
+          dateTimeOrder: 'desc',
+        },
         select: {
           id: true,
           dateTimeOrder: true,
