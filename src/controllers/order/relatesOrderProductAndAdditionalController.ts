@@ -38,6 +38,7 @@ export class RelatesOrderProductAndAdditionalController {
                             Image: {
                               select: {
                                 fileName: true,
+                                id: true,
                               },
                             },
                           },

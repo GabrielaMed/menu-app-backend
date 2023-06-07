@@ -42,6 +42,7 @@ export class GetOrdersByIdController {
                   Image: {
                     select: {
                       fileName: true,
+                      id: true,
                     },
                   },
                 },

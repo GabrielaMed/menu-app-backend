@@ -35,6 +35,7 @@ export class GetProductByNameController {
           Image: {
             select: {
               fileName: true,
+              id: true,
             },
           },
         },

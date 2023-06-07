@@ -29,6 +29,7 @@ export class GetProductByCompanyController {
           Image: {
             select: {
               fileName: true,
+              id: true,
             },
           },
         },

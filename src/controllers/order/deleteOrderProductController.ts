@@ -45,6 +45,7 @@ export class DeleteOrderProductController {
                   Image: {
                     select: {
                       fileName: true,
+                      id: true,
                     },
                   },
                 },

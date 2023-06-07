@@ -40,6 +40,7 @@ export class CreateAdditionalController {
                   Image: {
                     select: {
                       fileName: true,
+                      id: true,
                     },
                   },
                 },

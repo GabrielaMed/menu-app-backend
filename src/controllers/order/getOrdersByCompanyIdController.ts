@@ -46,6 +46,7 @@ export class GetOrdersByCompanyIdController {
                   Image: {
                     select: {
                       fileName: true,
+                      id: true,
                     },
                   },
                 },

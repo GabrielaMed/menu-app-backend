@@ -40,6 +40,7 @@ export class GetOrderByVisitorController {
                   Image: {
                     select: {
                       fileName: true,
+                      id: true,
                     },
                   },
                 },

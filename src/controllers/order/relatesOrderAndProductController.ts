@@ -34,6 +34,7 @@ export class RelatesOrderAndProductController {
                       Image: {
                         select: {
                           fileName: true,
+                          id: true,
                         },
                       },
                     },
