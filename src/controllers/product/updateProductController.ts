@@ -10,14 +10,14 @@ export class UpdateProductController {
       const { companyId, productId } = req.params;
 
       if (data.name) {
-        const productExists = await getProductByNameController.handle(
+        const productExistsId = await getProductByNameController.handle(
           req,
           res,
           data.name,
           companyId
         );
 
-        if (productExists) {
+        if (productExistsId && productExistsId !== productId) {
           return res.status(400).send('Product already exists.');
         }
       }
@@ -48,12 +48,13 @@ export class UpdateProductController {
           Image: {
             select: {
               fileName: true,
+              id: true,
             },
           },
         },
       });
 
-      res.status(201).json({
+      res.status(200).json({
         status: 'Updated Succesfully',
         product: response,
       });
