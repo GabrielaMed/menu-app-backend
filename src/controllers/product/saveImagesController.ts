@@ -15,13 +15,14 @@ export class SaveImagesController {
     }
 
     try {
-      await prisma.image.create({
+      const product = await prisma.image.create({
         data: {
           fileName: file.filename,
           productId,
         },
         select: {
           fileName: true,
+          id: true,
           product: {
             select: {
               id: true,
@@ -46,6 +47,7 @@ export class SaveImagesController {
 
       return res.status(201).json({
         status: 'success',
+        ...product,
       });
     } catch (error) {
       if (error instanceof Error) {
