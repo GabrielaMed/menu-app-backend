@@ -20,6 +20,7 @@ import { updateOrderController } from './controllers/order/updateOrderController
 import { deleteOrderProductController } from './controllers/order/deleteOrderProductController';
 import { getOrdersByCompanyIdController } from './controllers/order/getOrdersByCompanyIdController';
 import { getOrdersByIdController } from './controllers/order/getOrderByIdController';
+import { deleteImageByIdController } from './controllers/product/deleteImageByIdController';
 
 const routes = Router();
 
@@ -40,6 +41,8 @@ routes.post(
   multer(multerConfig).single('file'),
   saveImagesController.handle
 );
+
+routes.delete(`/${prefix}/image/:imageId`, deleteImageByIdController.handle);
 
 routes.get(`/${prefix}/product/:productId`, getProductByIdController.handle);
 
