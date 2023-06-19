@@ -21,6 +21,7 @@ import { deleteOrderProductController } from './controllers/order/deleteOrderPro
 import { getOrdersByCompanyIdController } from './controllers/order/getOrdersByCompanyIdController';
 import { getOrdersByIdController } from './controllers/order/getOrderByIdController';
 import { deleteImageByIdController } from './controllers/product/deleteImageByIdController';
+import { changeOrderStatusController } from './controllers/order/changeOrderStatusController';
 
 const routes = Router();
 
@@ -87,6 +88,11 @@ routes.get(
 routes.get(
   `/${prefix}/order/company/:companyId`,
   getOrdersByCompanyIdController.handle
+);
+
+routes.put(
+  `/${prefix}/order/:orderId/status`,
+  changeOrderStatusController.handle
 );
 
 export { routes };
