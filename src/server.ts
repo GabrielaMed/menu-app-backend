@@ -4,7 +4,15 @@ import cors from 'cors';
 import { routes } from './routes';
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      'https://menu-app-adm.netlify.app',
+      'https://menu-app-gm.netlify.app',
+      'https://menu-app-chef.netlify.app',
+    ],
+  })
+);
 app.use(express.json());
 app.use('/api', express.static('public'));
 app.use(express.urlencoded({ extended: true }));
