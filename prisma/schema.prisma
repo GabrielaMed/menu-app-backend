@@ -8,15 +8,16 @@ datasource db {
 }
 
 model Company {
-  id         String       @id @default(uuid())
-  name       String
-  email      String       @unique
-  phone      BigInt
-  lat        String
-  long       String
-  Additional Additional[]
-  Product    Product[]
-  Order      Order[]
+  id            String          @id @default(uuid())
+  name          String
+  email         String          @unique
+  phone         BigInt
+  lat           String
+  long          String
+  Additional    Additional[]
+  Product       Product[]
+  Order         Order[]
+  Table_qr_code Table_qr_code[]
 
   @@map("companies")
 }
@@ -120,4 +121,15 @@ model Order_additional {
   additional   Additional     @relation(fields: [additionalId], references: [id])
 
   @@map("order_additionals")
+}
+
+model Table_qr_code {
+  id          Int    @id @default(autoincrement()) @db.Integer
+  tableNumber Int
+  tableLink   String @db.VarChar(250)
+  companyId   String
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  @@map("table_qr_code")
 }
