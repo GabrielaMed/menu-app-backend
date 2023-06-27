@@ -22,6 +22,8 @@ import { getOrdersByCompanyIdController } from './controllers/order/getOrdersByC
 import { getOrdersByIdController } from './controllers/order/getOrderByIdController';
 import { deleteImageByIdController } from './controllers/product/deleteImageByIdController';
 import { changeOrderStatusController } from './controllers/order/changeOrderStatusController';
+import { createTableController } from './controllers/tableQrCode/createTableController';
+import { getTablesByCompanyController } from './controllers/tableQrCode/getTablesByCompanyController';
 
 const routes = Router();
 
@@ -94,5 +96,10 @@ routes.put(
   `/${prefix}/order/:orderId/status`,
   changeOrderStatusController.handle
 );
+
+routes
+  .route(`/${prefix}/table`)
+  .post(createTableController.handle)
+  .get(getTablesByCompanyController.handle);
 
 export { routes };
