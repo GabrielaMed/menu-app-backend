@@ -97,9 +97,9 @@ routes.put(
   changeOrderStatusController.handle
 );
 
-routes
-  .route(`/${prefix}/table`)
-  .post(createTableController.handle)
-  .get(getTablesByCompanyController.handle);
+routes.route(`/${prefix}/table`).post(createTableController.handle);
 
+routes
+  .route(`/${prefix}/:companyId/tables`)
+  .get(getTablesByCompanyController.handle);
 export { routes };

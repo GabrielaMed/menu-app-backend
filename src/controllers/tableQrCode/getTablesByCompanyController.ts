@@ -5,7 +5,7 @@ import { prisma } from '../../database/prismaClient';
 export class GetTablesByCompanyController {
   async handle(req: Request, res: Response) {
     try {
-      const { companyId } = req.body;
+      const { companyId } = req.params;
 
       const tables = await prisma.table_qr_code.findMany({
         where: { companyId },
