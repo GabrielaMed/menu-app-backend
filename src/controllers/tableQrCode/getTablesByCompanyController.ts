@@ -8,7 +8,7 @@ export class GetTablesByCompanyController {
       const { companyId } = req.body;
 
       const tables = await prisma.table_qr_code.findMany({
-        where: companyId,
+        where: { companyId },
         select: {
           tableNumber: true,
           tableLink: true,
