@@ -7,11 +7,30 @@ export class GetOrderByVisitorController {
     const { visitorUuid, companyId } = req.params;
 
     try {
-      const orders = await prisma.order.findMany({
+      const orderId = await prisma.orders_card.findMany({
         where: {
           visitorUuid,
           companyId,
-          orderStatusId: 3,
+          orders_card_status: {
+            status: {
+              equals: 'aberto',
+            },
+          },
+          order: {
+            orderStatusId: {
+              equals: 3,
+            },
+          },
+        },
+        take: 1,
+        select: {
+          orderId: true,
+        },
+      });
+
+      const orders = await prisma.order.findMany({
+        where: {
+          id: orderId[0].orderId,
         },
         select: {
           id: true,

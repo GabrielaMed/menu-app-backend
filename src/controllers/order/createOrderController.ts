@@ -5,7 +5,7 @@ import { AppError } from '../../middlewares/AppErrors';
 export class CreateOrderController {
   async handle(req: Request, res: Response) {
     try {
-      const { companyId, visitorUuid, statusOrder, tableNumber } = req.body;
+      const { statusOrder } = req.body;
 
       const orderStatus = await prisma.order_status.findMany({
         where: {
@@ -16,10 +16,7 @@ export class CreateOrderController {
 
       const response = await prisma.order.create({
         data: {
-          companyId,
-          visitorUuid,
           orderStatusId: orderStatus[0].id,
-          tableNumber,
           dateTimeOrder: new Date(),
           total: 0.0,
         },

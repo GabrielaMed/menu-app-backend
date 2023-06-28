@@ -8,17 +8,25 @@ export class GetOrdersByCompanyIdController {
     const { companyId } = req.params;
 
     try {
-      const orders = await prisma.order.findMany({
+      const ordersId = await prisma.orders_card.findMany({
         where: {
           companyId,
         },
-        orderBy: {
-          dateTimeOrder: 'desc',
+        select: {
+          orderId: true,
+        },
+      });
+      const orderIds = ordersId.map((order) => order.orderId);
+
+      const orders = await prisma.order.findMany({
+        where: {
+          id: {
+            in: orderIds,
+          },
         },
         select: {
           id: true,
           dateTimeOrder: true,
-          tableNumber: true,
           total: true,
           orderNumber: true,
           Order_products: {
@@ -58,6 +66,11 @@ export class GetOrdersByCompanyIdController {
               status: true,
             },
           },
+          Orders_card: {
+            select: {
+              tableNumber: true,
+            },
+          },
           _count: true,
         },
       });
@@ -65,6 +78,7 @@ export class GetOrdersByCompanyIdController {
       const ordersParsed = orders.map((order) => ({
         ...order,
         statusOrder: order.order_status.status,
+        tableNumber: order.Orders_card[0].tableNumber,
         Order_products: [
           ...order.Order_products.map((item) => ({
             id: item.id,

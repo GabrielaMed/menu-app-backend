@@ -16,8 +16,8 @@ model Company {
   long          String
   Additional    Additional[]
   Product       Product[]
-  Order         Order[]
   Table_qr_code Table_qr_code[]
+  Orders_card   Orders_card[]
 
   @@map("companies")
 }
@@ -81,18 +81,15 @@ model Order_status {
 
 model Order {
   id            String    @id @default(uuid())
-  visitorUuid   String
   orderStatusId Int
-  companyId     String
-  tableNumber   Int
-  dateTimeOrder DateTime?
   total         Decimal?  @db.Decimal(7, 2)
   orderNumber   Int       @default(autoincrement()) @db.Integer
+  dateTimeOrder DateTime?
 
   order_status Order_status @relation(fields: [orderStatusId], references: [id])
-  company      Company      @relation(fields: [companyId], references: [id])
 
   Order_products Order_products[]
+  Orders_card    Orders_card[]
 
   @@map("orders")
 }
@@ -132,4 +129,28 @@ model Table_qr_code {
   company Company @relation(fields: [companyId], references: [id])
 
   @@map("table_qr_code")
+}
+
+model Orders_card_status {
+  id          Int           @id @default(autoincrement()) @db.Integer
+  status      String        @db.VarChar(50)
+  Orders_card Orders_card[]
+
+  @@map("orders_card_status")
+}
+
+model Orders_card {
+  id                 Int      @id @default(autoincrement()) @db.Integer
+  tableNumber        Int
+  visitorUuid        String
+  orderId            String
+  ordersCardStatusId Int
+  companyId          String
+  dateTime           DateTime
+
+  company            Company            @relation(fields: [companyId], references: [id])
+  order              Order              @relation(fields: [orderId], references: [id])
+  orders_card_status Orders_card_status @relation(fields: [ordersCardStatusId], references: [id])
+
+  @@map("orders_card")
 }

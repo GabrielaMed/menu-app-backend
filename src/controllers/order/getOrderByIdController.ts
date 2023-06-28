@@ -7,14 +7,13 @@ export class GetOrdersByIdController {
     const { orderId } = req.params;
 
     try {
-      const orders = await prisma.order.findUnique({
+      const order = await prisma.order.findUnique({
         where: {
           id: orderId,
         },
         select: {
           id: true,
           dateTimeOrder: true,
-          tableNumber: true,
           total: true,
           orderNumber: true,
           Order_products: {
@@ -54,17 +53,23 @@ export class GetOrdersByIdController {
               status: true,
             },
           },
+          Orders_card: {
+            select: {
+              tableNumber: true,
+            },
+          },
           _count: true,
         },
       });
 
-      if (!orders) {
+      if (!order) {
         return res.status(404).send('Order not found!');
       }
 
       const ordersParsed = {
-        ...orders,
-        statusOrder: orders.order_status.status,
+        ...order,
+        statusOrder: order.order_status.status,
+        tableNumber: order.Orders_card[0].tableNumber,
       };
 
       return res.status(200).json(ordersParsed);

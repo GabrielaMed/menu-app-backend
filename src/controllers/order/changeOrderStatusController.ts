@@ -25,7 +25,6 @@ export class ChangeOrderStatusController {
         select: {
           id: true,
           dateTimeOrder: true,
-          tableNumber: true,
           total: true,
           orderNumber: true,
           Order_products: {
