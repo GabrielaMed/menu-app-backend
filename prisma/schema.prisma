@@ -88,8 +88,8 @@ model Order {
 
   order_status Order_status @relation(fields: [orderStatusId], references: [id])
 
-  Order_products Order_products[]
-  Orders_card    Orders_card[]
+  Order_products       Order_products[]
+  Order_in_orders_card Order_in_orders_card[]
 
   @@map("orders")
 }
@@ -143,14 +143,24 @@ model Orders_card {
   id                 Int      @id @default(autoincrement()) @db.Integer
   tableNumber        Int
   visitorUuid        String
-  orderId            String
   ordersCardStatusId Int
   companyId          String
   dateTime           DateTime
 
-  company            Company            @relation(fields: [companyId], references: [id])
-  order              Order              @relation(fields: [orderId], references: [id])
-  orders_card_status Orders_card_status @relation(fields: [ordersCardStatusId], references: [id])
+  company              Company                @relation(fields: [companyId], references: [id])
+  orders_card_status   Orders_card_status     @relation(fields: [ordersCardStatusId], references: [id])
+  Order_in_orders_card Order_in_orders_card[]
 
   @@map("orders_card")
+}
+
+model Order_in_orders_card {
+  id           Int    @id @default(autoincrement()) @db.Integer
+  orderId      String
+  ordersCardId Int
+
+  order       Order       @relation(fields: [orderId], references: [id])
+  orders_card Orders_card @relation(fields: [ordersCardId], references: [id])
+
+  @@map("order_in_orders_card")
 }
