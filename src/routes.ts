@@ -24,6 +24,8 @@ import { deleteImageByIdController } from './controllers/product/deleteImageById
 import { changeOrderStatusController } from './controllers/order/changeOrderStatusController';
 import { createTableController } from './controllers/tableQrCode/createTableController';
 import { getTablesByCompanyController } from './controllers/tableQrCode/getTablesByCompanyController';
+import { createOrdersCartController } from './controllers/ordersCart/createOrdersCartController';
+import { getOpenOrdersCartByVisitorController } from './controllers/ordersCart/getOpenOrdersCartByVisitorController';
 
 const routes = Router();
 
@@ -69,6 +71,13 @@ routes.post(
 );
 
 routes.get(`/${prefix}/company/:companyId`, getCompanyByIdController.handle);
+
+routes
+  .route(`/${prefix}/orders_cart/:visitorUuid`)
+  .post(
+    getOpenOrdersCartByVisitorController.handle,
+    createOrdersCartController.handle
+  );
 
 routes.post(`/${prefix}/order`, createOrderController.handle);
 
