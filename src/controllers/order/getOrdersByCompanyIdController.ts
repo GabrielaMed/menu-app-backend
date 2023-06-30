@@ -75,6 +75,12 @@ export class GetOrdersByCompanyIdController {
               orders_card: {
                 select: {
                   tableNumber: true,
+                  dateTime: true,
+                  orders_card_status: {
+                    select: {
+                      status: true,
+                    },
+                  },
                 },
               },
             },
@@ -83,10 +89,10 @@ export class GetOrdersByCompanyIdController {
         },
       });
 
-      const ordersParsed = orders.map((order) => ({
+      const ordersParsed = orders.map((order, index) => ({
         ...order,
         statusOrder: order.order_status.status,
-        tableNumber: order.Order_in_orders_card[0].orders_card.tableNumber,
+        tableNumber: order.Order_in_orders_card[index].orders_card.tableNumber,
         Order_products: [
           ...order.Order_products.map((item) => ({
             id: item.id,
