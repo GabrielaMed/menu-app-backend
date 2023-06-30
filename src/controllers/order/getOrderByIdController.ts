@@ -53,9 +53,13 @@ export class GetOrdersByIdController {
               status: true,
             },
           },
-          Orders_card: {
+          Order_in_orders_card: {
             select: {
-              tableNumber: true,
+              orders_card: {
+                select: {
+                  tableNumber: true,
+                },
+              },
             },
           },
           _count: true,
@@ -69,7 +73,7 @@ export class GetOrdersByIdController {
       const ordersParsed = {
         ...order,
         statusOrder: order.order_status.status,
-        tableNumber: order.Orders_card[0].tableNumber,
+        tableNumber: order.Order_in_orders_card[0].orders_card.tableNumber,
       };
 
       return res.status(200).json(ordersParsed);

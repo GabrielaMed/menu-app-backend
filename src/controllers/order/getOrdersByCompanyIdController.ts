@@ -8,9 +8,13 @@ export class GetOrdersByCompanyIdController {
     const { companyId } = req.params;
 
     try {
-      const ordersId = await prisma.orders_card.findMany({
+      const ordersId = await prisma.order_in_orders_card.findMany({
         where: {
-          companyId,
+          orders_card: {
+            companyId: {
+              equals: companyId,
+            },
+          },
         },
         select: {
           orderId: true,
@@ -66,9 +70,13 @@ export class GetOrdersByCompanyIdController {
               status: true,
             },
           },
-          Orders_card: {
+          Order_in_orders_card: {
             select: {
-              tableNumber: true,
+              orders_card: {
+                select: {
+                  tableNumber: true,
+                },
+              },
             },
           },
           _count: true,
@@ -78,7 +86,7 @@ export class GetOrdersByCompanyIdController {
       const ordersParsed = orders.map((order) => ({
         ...order,
         statusOrder: order.order_status.status,
-        tableNumber: order.Orders_card[0].tableNumber,
+        tableNumber: order.Order_in_orders_card[0].orders_card.tableNumber,
         Order_products: [
           ...order.Order_products.map((item) => ({
             id: item.id,

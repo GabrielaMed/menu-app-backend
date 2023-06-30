@@ -13,25 +13,38 @@ export class DeleteOrderProductController {
         },
       });
 
-      const orderId = await prisma.orders_card.findMany({
+      const order_cart = await prisma.order_in_orders_card.findMany({
         where: {
-          visitorUuid,
-          companyId,
-          orders_card_status: {
-            status: {
-              equals: 'aberto',
+          orders_card: {
+            visitorUuid: {
+              equals: visitorUuid,
+            },
+            orders_card_status: {
+              status: {
+                equals: 'aberto',
+              },
+            },
+            companyId: {
+              equals: companyId,
             },
           },
         },
-        take: 1,
         select: {
-          orderId: true,
-          tableNumber: true,
+          order: {
+            select: {
+              id: true,
+            },
+          },
+          orders_card: {
+            select: {
+              tableNumber: true,
+            },
+          },
         },
       });
 
       const orderProducts = await prisma.order.findMany({
-        where: { id: orderId[0].orderId },
+        where: { id: order_cart[0].order.id },
         select: {
           id: true,
           Order_products: {
@@ -78,7 +91,7 @@ export class DeleteOrderProductController {
       const orderProductsParsed = orderProducts?.map((order) => ({
         ...order,
         statusOrder: order.order_status.status,
-        tableNumber: orderId[0].tableNumber,
+        tableNumber: order_cart[0].orders_card.tableNumber,
       }));
 
       res.status(200).json(orderProductsParsed);
