@@ -89,16 +89,12 @@ export class GetOrdersByCompanyIdController {
         },
       });
 
-      const ordersParsed = orders.map((order, index) => {
-        const orderInOrdersCard = order.Order_in_orders_card[index];
-        const tableNumber = orderInOrdersCard
-          ? orderInOrdersCard.orders_card.tableNumber
-          : null;
-
+      const ordersParsed = orders.map((order) => {
+        const orderInOrdersCard = order.Order_in_orders_card[0];
         return {
           ...order,
           statusOrder: order.order_status.status,
-          tableNumber: tableNumber,
+          tableNumber: orderInOrdersCard?.orders_card.tableNumber || null,
           Order_products: [
             ...order.Order_products.map((item) => ({
               id: item.id,
@@ -111,6 +107,13 @@ export class GetOrdersByCompanyIdController {
                   quantity: item.quantity,
                 })),
               ],
+            })),
+          ],
+          Order_card: [
+            ...order.Order_in_orders_card.map((item) => ({
+              dateTime: item.orders_card.dateTime,
+              order_card_status: item.orders_card.orders_card_status.status,
+              tableNumber: item.orders_card.tableNumber,
             })),
           ],
         };
