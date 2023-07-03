@@ -89,28 +89,37 @@ export class GetOrdersByCompanyIdController {
         },
       });
 
-      const ordersParsed = orders.map((order, index) => ({
-        ...order,
-        statusOrder: order.order_status.status,
-        tableNumber: order.Order_in_orders_card[index].orders_card.tableNumber,
-        Order_products: [
-          ...order.Order_products.map((item) => ({
-            id: item.id,
-            product: item.product,
-            observation: item.observation,
-            quantity: item.quantity,
-            additionals: [
-              ...item.Order_additional.map((item) => ({
-                ...item.additional,
-                quantity: item.quantity,
-              })),
-            ],
-          })),
-        ],
-      }));
+      const ordersParsed = orders.map((order, index) => {
+        const orderInOrdersCard = order.Order_in_orders_card[index];
+        const tableNumber = orderInOrdersCard
+          ? orderInOrdersCard.orders_card.tableNumber
+          : null;
+
+        return {
+          ...order,
+          statusOrder: order.order_status.status,
+          tableNumber: tableNumber,
+          Order_products: [
+            ...order.Order_products.map((item) => ({
+              id: item.id,
+              product: item.product,
+              observation: item.observation,
+              quantity: item.quantity,
+              additionals: [
+                ...item.Order_additional.map((item) => ({
+                  ...item.additional,
+                  quantity: item.quantity,
+                })),
+              ],
+            })),
+          ],
+        };
+      });
 
       return res.status(200).json(ordersParsed);
     } catch (error) {
+      console.log('>>>', error);
+
       if (error instanceof Error) {
         throw new AppError(error.message, 400);
       } else {
