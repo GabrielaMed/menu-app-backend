@@ -1,30 +1,23 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { prisma } from '../../database/prismaClient';
 import { AppError } from '../../middlewares/AppErrors';
-import { createOrderController } from '../order/createOrderController';
 import { relatesOrdersAndOrdersCardController } from './relatesOrdersAndOrdersCardController';
 
-export class GetOpenOrdersCartByVisitorController {
-  async handle(req: Request, res: Response, next: NextFunction) {
+export class CreateOrdersCardController {
+  async handle(req: Request, res: Response) {
     const { tableNumber, companyId } = req.body;
     const { visitorUuid } = req.params;
 
     try {
-      const orders_card = await prisma.orders_card.findMany({
-        where: {
+      const orders_card = await prisma.orders_card.create({
+        data: {
+          dateTime: new Date(),
           tableNumber,
           visitorUuid,
           companyId,
           ordersCardStatusId: 1,
         },
-        select: {
-          id: true,
-        },
       });
-
-      if (orders_card.length === 0) {
-        return next();
-      }
 
       const order = await prisma.order.create({
         data: {
@@ -36,7 +29,7 @@ export class GetOpenOrdersCartByVisitorController {
 
       const relates = relatesOrdersAndOrdersCardController.handle(
         order.id,
-        orders_card[0].id
+        orders_card.id
       );
 
       return res.status(200).json(relates);
@@ -51,5 +44,4 @@ export class GetOpenOrdersCartByVisitorController {
   }
 }
 
-export const getOpenOrdersCartByVisitorController =
-  new GetOpenOrdersCartByVisitorController();
+export const createOrdersCardController = new CreateOrdersCardController();

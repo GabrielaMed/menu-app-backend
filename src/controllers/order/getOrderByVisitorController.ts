@@ -7,7 +7,7 @@ export class GetOrderByVisitorController {
     const { visitorUuid, companyId } = req.params;
 
     try {
-      const order_cart = await prisma.order_in_orders_card.findMany({
+      const order_card = await prisma.order_in_orders_card.findMany({
         where: {
           orders_card: {
             visitorUuid: {
@@ -33,13 +33,13 @@ export class GetOrderByVisitorController {
         },
       });
 
-      if (order_cart.length === 0) {
+      if (order_card.length === 0) {
         return res.status(204).send('No orders found!');
       }
 
       const orders = await prisma.order.findMany({
         where: {
-          id: order_cart[0].orderId,
+          id: order_card[0].orderId,
         },
         select: {
           id: true,

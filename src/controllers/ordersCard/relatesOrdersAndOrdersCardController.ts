@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import { prisma } from '../../database/prismaClient';
 import { AppError } from '../../middlewares/AppErrors';
 
