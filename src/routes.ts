@@ -24,8 +24,9 @@ import { deleteImageByIdController } from './controllers/product/deleteImageById
 import { changeOrderStatusController } from './controllers/order/changeOrderStatusController';
 import { createTableController } from './controllers/tableQrCode/createTableController';
 import { getTablesByCompanyController } from './controllers/tableQrCode/getTablesByCompanyController';
-import { createOrdersCartController } from './controllers/ordersCart/createOrdersCartController';
-import { getOpenOrdersCartByVisitorController } from './controllers/ordersCart/getOpenOrdersCartByVisitorController';
+import { createOrdersCardController } from './controllers/ordersCard/createOrdersCardController';
+import { getOpenOrdersCardByVisitorController } from './controllers/ordersCard/getOpenOrdersCardByVisitorController';
+import { getOrdersCardByTableController } from './controllers/ordersCard/getOrdersCardByTableController';
 
 const routes = Router();
 
@@ -73,11 +74,16 @@ routes.post(
 routes.get(`/${prefix}/company/:companyId`, getCompanyByIdController.handle);
 
 routes
-  .route(`/${prefix}/orders_cart/:visitorUuid`)
+  .route(`/${prefix}/orders_card/:visitorUuid`)
   .post(
-    getOpenOrdersCartByVisitorController.handle,
-    createOrdersCartController.handle
+    getOpenOrdersCardByVisitorController.handle,
+    createOrdersCardController.handle
   );
+
+routes.post(
+  `/${prefix}/orders_card/table/:tableNumber`,
+  getOrdersCardByTableController.handle
+);
 
 routes.post(`/${prefix}/order`, createOrderController.handle);
 
