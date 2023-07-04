@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { AppError } from '../../middlewares/AppErrors';
 import { prisma } from '../../database/prismaClient';
-import { Order_status } from '@prisma/client';
 
 export class GetOrdersByCompanyIdController {
   async handle(req: Request, res: Response) {
