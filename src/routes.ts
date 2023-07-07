@@ -27,6 +27,7 @@ import { getTablesByCompanyController } from './controllers/tableQrCode/getTable
 import { createOrdersCardController } from './controllers/ordersCard/createOrdersCardController';
 import { getOpenOrdersCardByVisitorController } from './controllers/ordersCard/getOpenOrdersCardByVisitorController';
 import { getOrdersCardByTableController } from './controllers/ordersCard/getOrdersCardByTableController';
+import { changeOrdersCardStatusController } from './controllers/ordersCard/changeOrdersCardStatusController';
 
 const routes = Router();
 
@@ -83,6 +84,11 @@ routes
 routes.post(
   `/${prefix}/orders_card/table/:tableNumber`,
   getOrdersCardByTableController.handle
+);
+
+routes.post(
+  `/${prefix}/orders_card/:ordersCardId/status`,
+  changeOrdersCardStatusController.handle
 );
 
 routes.post(`/${prefix}/order`, createOrderController.handle);
