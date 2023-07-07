@@ -14,6 +14,7 @@ export class GetOrdersCardByTableController {
           tableNumber: Number(tableNumber),
         },
         select: {
+          id: true,
           dateTime: true,
           tableNumber: true,
           orders_card_status: {
@@ -71,7 +72,6 @@ export class GetOrdersCardByTableController {
           },
         },
       });
-      // console.log('HERE>>>>>>>>>', orders_card);
 
       if (orders_card.length === 0) {
         return res.status(400).send('No Orders Card found!');
@@ -98,6 +98,7 @@ export class GetOrdersCardByTableController {
           ],
           Order_card: [
             {
+              id: card.id,
               dateTime: card.dateTime,
               order_card_status: card.orders_card_status.status,
               tableNumber: card.tableNumber,
