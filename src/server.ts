@@ -10,6 +10,7 @@ app.use(
       'https://menu-app-adm.netlify.app',
       'https://menu-app-gm.netlify.app',
       'https://menu-app-chef.netlify.app',
+      'https://menu-app-cashier.netlify.app',
     ],
   })
 );
