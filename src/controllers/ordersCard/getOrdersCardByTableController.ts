@@ -74,7 +74,7 @@ export class GetOrdersCardByTableController {
       });
 
       if (orders_card.length === 0) {
-        return res.status(400).send('No Orders Card found!');
+        return res.status(204).send('No Orders Card found!');
       }
 
       const ordersParsed = orders_card.map((card) => {
